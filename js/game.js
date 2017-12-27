@@ -1,9 +1,26 @@
 var MyCraft = {};
 
+MyCraft.rows = 13;
+MyCraft.cols = 20;
+
 MyCraft.tiles = [];
 MyCraft.grid = [];
+MyCraft.tools = {
+	pickaxe: 'pickaxe',
+	shovel: 'shovel',
+	axe: 'axe'
+};
+
+MyCraft.toolsAbility = {
+	pickaxe: ['rock'],
+	shovel: ['grass', 'dirt'],
+	axe: ['leaf', 'tree']
+};
 
 MyCraft.selectedTile = '';
+MyCraft.selectedTool = '';
+MyCraft.lastSelected = '';
+
 MyCraft.inventory = {
 	dirt: 0,
 	grass: 0,
@@ -12,22 +29,33 @@ MyCraft.inventory = {
 	rock: 0
 };
 
-
-function generateGrid() {
-	let rows = 13;
-	let cols = 20;
-
-	MyCraft.grid = new Array(rows);
-
-	for (var i = 0; i < rows; i++) {
-		MyCraft.grid[i] = new Array(cols);
+function checkToolAbility(tile) {
+	if (MyCraft.toolsAbility[MyCraft.selectedTool].includes(tile.tileType)) {
+		return true;
 	}
 
-	for (var i = 0; i < rows; i++) {
-		for (var j = 0; j < cols; j++) {
-			let newDiv = $('<div/>').addClass('gridTile');
+	return false;
+}
 
-			//MyCraft.grid[i][j] = TILE;
+
+function generateGrid() {
+	MyCraft.grid = new Array(MyCraft.rows);
+
+	for (var i = 0; i < MyCraft.rows; i++) {
+		MyCraft.grid[i] = new Array(MyCraft.cols);
+	}
+
+	for (var i = 0; i < MyCraft.rows; i++) {
+		for (var j = 0; j < MyCraft.cols; j++) {
+			let newDiv = $('<div/>').addClass('gridTile').attr('id', 'tile-' + i + '-' + j);
+
+			let tileCoords = newDiv.attr('id').split('-');
+			let x = tileCoords[1];
+			let y = tileCoords[2];
+			let tile = new Tile(x, y, tiles.none, newDiv);
+			MyCraft.grid[x][y] = tile;
+
+			setTileClickEvent(newDiv);
 			$('#grid').append(newDiv);
 		}
 	}
@@ -35,20 +63,87 @@ function generateGrid() {
 	
 }
 
+function setTileClickEvent(div) {
+	div.on('click', function() {
+		if (MyCraft.lastSelected == MyCraft.tools.pickaxe ||
+			MyCraft.lastSelected == MyCraft.tools.axe ||
+			MyCraft.lastSelected == MyCraft.tools.shovel) {
+
+			let tileCoords = this.id.split('-');
+			let x = tileCoords[1];
+			let y = tileCoords[2];
+
+			let gatheredTile = MyCraft.grid[x][y].tileType;
+
+			// TODO: FIX CHECKTOOLABILITY
+			if (checkToolAbility(gatheredTile)) {
+				MyCraft.inventory[gatheredTile] = MyCraft.inventory[gatheredTile] + 1;
+				MyCraft.grid[x][y].setTile('');
+			} else {
+				// TODO: Add effect
+			}
+			
+		} else {
+			let tileCoords = this.id.split('-');
+			let x = tileCoords[1];
+			let y = tileCoords[2];
+
+			MyCraft.grid[x][y].setTile(MyCraft.selectedTile);
+		}
+
+		console.log(MyCraft.inventory);
+	});
+}
+
+
 function setSelectTilesEvent() {
 	let toolbarTiles = $('.tileImage');
 
 	toolbarTiles.on('click', function() {
 		MyCraft.selectedTile = this.id;
+		MyCraft.lastSelected = this.id;
 		console.log(this.id);
 	});
 }
 
+function setSelectToolsEvent() {
+	let toolbarTools = $('.toolImage');
 
+	toolbarTools.on('click', function() {
+		MyCraft.selectedTool = this.id;
+		MyCraft.lastSelected = this.id;
+		console.log(this.id);
+	});
+}
 
+function saveGrid() {
+	let grid = {};
+
+	for (var i = 0; i < MyCraft.rows; i++) {
+		for (var j = 0; j < MyCraft.cols; j++) {
+			let id = MyCraft.grid[i][j].element.attr('id');
+			grid[id] = MyCraft.grid[i][j].toObj();
+		}
+	}
+
+	// TODO: Save to a file
+	//console.log(grid);
+}
+
+function loadGrid(grid) {
+	for (var i = 0; i < MyCraft.rows; i++) {
+		for (var j = 0; j < MyCraft.cols; j++) {
+			let id = MyCraft.grid[i][j].element.attr('id');
+			MyCraft.grid[i][j].setTile(grid[id].tileType);
+		}
+	}
+}
 
 
 $(document).ready(function() {
 	generateGrid();
 	setSelectTilesEvent();
+	setSelectToolsEvent();
+
+	saveGrid();
 });
