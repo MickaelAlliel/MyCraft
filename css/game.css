@@ -1,0 +1,10 @@
+#grid, #toolbar {
+	border: 1px solid black;
+}
+
+.gridTile {
+	width: 64px;
+	height: 64px;
+	border: 1px solid black;
+	display: inline-block;
+}
