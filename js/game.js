@@ -3,6 +3,15 @@ var MyCraft = {};
 MyCraft.tiles = [];
 MyCraft.grid = [];
 
+MyCraft.selectedTile = '';
+MyCraft.inventory = {
+	dirt: 0,
+	grass: 0,
+	tree: 0,
+	leaf: 0,
+	rock: 0
+};
+
 
 function generateGrid() {
 	let rows = 13;
@@ -26,10 +35,20 @@ function generateGrid() {
 	
 }
 
+function setSelectTilesEvent() {
+	let toolbarTiles = $('.tileImage');
+
+	toolbarTiles.on('click', function() {
+		MyCraft.selectedTile = this.id;
+		console.log(this.id);
+	});
+}
+
 
 
 
 
 $(document).ready(function() {
 	generateGrid();
+	setSelectTilesEvent();
 });

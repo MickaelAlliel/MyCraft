@@ -2,6 +2,16 @@
 	border: 1px solid black;
 }
 
+.tileImage {
+	width: 64px;
+	height: 64px;
+}
+
+.tileImage img {
+	width: 64px;
+	height: 64px;
+}
+
 .gridTile {
 	width: 64px;
 	height: 64px;
