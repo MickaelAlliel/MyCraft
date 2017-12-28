@@ -51,14 +51,16 @@ function setTileClickEvent(div) {
 				// TODO: Add effect
 			}
 			
-		} else {
+		} else  {
+
 			let tileCoords = this.id.split('-');
-			let x = tileCoords[1];
-			let y = tileCoords[2];
+				let x = tileCoords[1];
+				let y = tileCoords[2];
 
-			MyCraft.grid[x][y].setTile(MyCraft.selectedTile);
+			if (MyCraft.grid[x][y].tileType=='') {
+				MyCraft.grid[x][y].setTile(MyCraft.selectedTile);
+			}
 		}
-
 		console.log(MyCraft.inventory);
 	});
 }
@@ -84,7 +86,7 @@ function setSelectToolsEvent() {
 	});
 }
 
-function saveGrid() {
+function saveGrid (name) {
 	let grid = {};
 
 	for (var i = 0; i < MyCraft.rows; i++) {
@@ -94,17 +96,31 @@ function saveGrid() {
 		}
 	}
 
-	// TODO: Save to a file
-	//console.log(grid);
+	var a = document.createElement('a');
+	var file = new Blob([JSON.stringify(grid)],{type: "application/json"} );
+	console.log(file);
+	a.href = URL.createObjectURL(file);
+	console.log(URL.createObjectURL(file));
+	a.download = name;
+	a.click();
 }
 
-function loadGrid(grid) {
-	for (var i = 0; i < MyCraft.rows; i++) {
-		for (var j = 0; j < MyCraft.cols; j++) {
-			let id = MyCraft.grid[i][j].element.attr('id');
-			MyCraft.grid[i][j].setTile(grid[id].tileType);
-		}
-	}
+
+function loadGrid(filename) {
+	var grid = null;
+	//$.getJSON(filename, function(jsonText){
+	//	grid = JSON.parse(jsonText);
+	fetch(filename).then(function(jsonText){
+		console.log(jsonText);
+		/*grid = JSON.parse(jsonText);
+
+		for (var i = 0; i < MyCraft.rows; i++) {
+			for (var j = 0; j < MyCraft.cols; j++) {
+				let id = MyCraft.grid[i][j].element.attr('id');
+				MyCraft.grid[i][j].setTile(grid[id].tileType);
+			}
+		}*/
+	});
 }
 
 
@@ -113,5 +129,12 @@ $(document).ready(function() {
 	setSelectTilesEvent();
 	setSelectToolsEvent();
 
-	saveGrid();
+	var mysave = $('#save');
+	mysave.on('click',function() {
+		saveGrid("world.json");
+	});
+	var myload = $('#load');
+	myload.on('click',function() {
+		loadGrid("world.json");
+	});
 });
