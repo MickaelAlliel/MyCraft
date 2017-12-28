@@ -1,36 +1,5 @@
-var MyCraft = {};
-
-MyCraft.rows = 13;
-MyCraft.cols = 20;
-
-MyCraft.tiles = [];
-MyCraft.grid = [];
-MyCraft.tools = {
-	pickaxe: 'pickaxe',
-	shovel: 'shovel',
-	axe: 'axe'
-};
-
-MyCraft.toolsAbility = {
-	pickaxe: ['rock'],
-	shovel: ['grass', 'dirt'],
-	axe: ['leaf', 'tree']
-};
-
-MyCraft.selectedTile = '';
-MyCraft.selectedTool = '';
-MyCraft.lastSelected = '';
-
-MyCraft.inventory = {
-	dirt: 0,
-	grass: 0,
-	tree: 0,
-	leaf: 0,
-	rock: 0
-};
-
 function checkToolAbility(tile) {
-	if (MyCraft.toolsAbility[MyCraft.selectedTool].includes(tile.tileType)) {
+	if (MyCraft.toolsAbility[MyCraft.selectedTool].includes(tile)) {
 		return true;
 	}
 
@@ -52,7 +21,7 @@ function generateGrid() {
 			let tileCoords = newDiv.attr('id').split('-');
 			let x = tileCoords[1];
 			let y = tileCoords[2];
-			let tile = new Tile(x, y, tiles.none, newDiv);
+			let tile = new Tile(x, y, MyCraft.tiles.none, newDiv);
 			MyCraft.grid[x][y] = tile;
 
 			setTileClickEvent(newDiv);
@@ -75,7 +44,6 @@ function setTileClickEvent(div) {
 
 			let gatheredTile = MyCraft.grid[x][y].tileType;
 
-			// TODO: FIX CHECKTOOLABILITY
 			if (checkToolAbility(gatheredTile)) {
 				MyCraft.inventory[gatheredTile] = MyCraft.inventory[gatheredTile] + 1;
 				MyCraft.grid[x][y].setTile('');

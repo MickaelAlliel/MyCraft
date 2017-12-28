@@ -1,18 +1,8 @@
-var tiles = {
-	dirt: 'images/dirt.png',
-	grass: 'images/grass.png',
-	leaf: 'images/leaf.jpg',
-	rock: 'images/rock.png',
-	tree: 'images/tree.png',
-	none: '',
-};
-
 class Tile {
 	constructor(x, y, tileType, element) {
 		this.x = x;
 		this.y = y;
 		this.tileType = tileType;
-		this.size = 64;
 		this.element = element;
 		
 		this.setTile(tileType);
@@ -28,22 +18,22 @@ Tile.prototype.setTile = function(tileType) {
 
 	switch (this.tileType) {
 		case 'dirt':
-			this.tile = tiles.dirt;
+			this.tile = MyCraft.tiles.dirt;
 			break;
 		case 'grass':
-			this.tile = tiles.grass;
+			this.tile = MyCraft.tiles.grass;
 			break;
 		case 'leaf':
-			this.tile = tiles.leaf;
+			this.tile = MyCraft.tiles.leaf;
 			break;
 		case 'rock':
-			this.tile = tiles.rock;
+			this.tile = MyCraft.tiles.rock;
 			break;
 		case 'tree':
-			this.tile = tiles.tree;
+			this.tile = MyCraft.tiles.tree;
 			break;
 		default:
-			this.tile = tiles.none;
+			this.tile = MyCraft.tiles.none;
 			break;
 	};
 

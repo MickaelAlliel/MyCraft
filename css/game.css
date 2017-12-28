@@ -2,19 +2,14 @@
 	border: 1px solid black;
 }
 
-.tileImage, .toolImage {
-	width: 64px;
-	height: 64px;
-}
-
-.tileImage img, .toolImage img {
+.tileImage, .toolImage, .tileImage img, .toolImage img  {
 	width: 64px;
 	height: 64px;
 }
 
 .gridTile {
-	width: 64px;
-	height: 64px;
+	width: 40px;
+	height: 40px;
 	border: 1px solid black;
 	display: inline-block;
 
