@@ -165,10 +165,10 @@ $(document).ready(function() {
 
 	updateInventory();
 
-	var mysave = $('#save');
+	/*var mysave = $('#save');
 	mysave.on('click',function() {
 		saveGrid("world.json");
-	});
+	});*/
 
 	loadGrid();
 
