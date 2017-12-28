@@ -54,8 +54,8 @@ function setTileClickEvent(div) {
 		} else  {
 
 			let tileCoords = this.id.split('-');
-				let x = tileCoords[1];
-				let y = tileCoords[2];
+			let x = tileCoords[1];
+			let y = tileCoords[2];
 
 			if (MyCraft.grid[x][y].tileType=='') {
 				MyCraft.grid[x][y].setTile(MyCraft.selectedTile);
@@ -106,21 +106,19 @@ function saveGrid (name) {
 }
 
 
-function loadGrid(filename) {
-	var grid = null;
+function loadGrid() {
+	var grid = MyCraft.world;
+
 	//$.getJSON(filename, function(jsonText){
-	//	grid = JSON.parse(jsonText);
-	fetch(filename).then(function(jsonText){
-		console.log(jsonText);
-		/*grid = JSON.parse(jsonText);
+		//grid = JSON.parse(jsonText);
 
 		for (var i = 0; i < MyCraft.rows; i++) {
 			for (var j = 0; j < MyCraft.cols; j++) {
 				let id = MyCraft.grid[i][j].element.attr('id');
 				MyCraft.grid[i][j].setTile(grid[id].tileType);
 			}
-		}*/
-	});
+		}
+	//});
 }
 
 
@@ -133,8 +131,14 @@ $(document).ready(function() {
 	mysave.on('click',function() {
 		saveGrid("world.json");
 	});
+
+	loadGrid();
+
+	/*
 	var myload = $('#load');
+	var loadfile = 'http://cdn.mickaelalliel.com/mycraft/world.json';
 	myload.on('click',function() {
-		loadGrid("world.json");
+		loadGrid(loadfile);
 	});
+	*/
 });
