@@ -6,6 +6,20 @@ function checkToolAbility(tile) {
 	return false;
 }
 
+function updateInventory() {
+	var dirt = $('#dirtInventory');
+	var grass = $('#grassInventory');
+	var leaf = $('#leafInventory');
+	var tree = $('#treeInventory');
+	var rock = $('#rockInventory');
+
+	dirt.html(MyCraft.inventory.dirt);
+	grass.html(MyCraft.inventory.grass);
+	leaf.html(MyCraft.inventory.leaf);
+	tree.html(MyCraft.inventory.tree);
+	rock.html(MyCraft.inventory.rock);
+}
+
 
 function generateGrid() {
 	MyCraft.grid = new Array(MyCraft.rows);
@@ -61,7 +75,8 @@ function setTileClickEvent(div) {
 				MyCraft.grid[x][y].setTile(MyCraft.selectedTile);
 			}
 		}
-		console.log(MyCraft.inventory);
+
+		updateInventory();
 	});
 }
 
@@ -106,19 +121,30 @@ function saveGrid (name) {
 }
 
 
-function loadGrid() {
+function loadGrid(filename) {
 	var grid = MyCraft.world;
 
-	//$.getJSON(filename, function(jsonText){
-		//grid = JSON.parse(jsonText);
+	if (filename) {
+		/*
+		var fs = require('fs');
 
+		fs.readFileSync(filename, function(data) {
+			console.log(data);
+			grid = data;
+
+			let id = MyCraft.grid[i][j].element.attr('id');
+			MyCraft.grid[i][j].setTile(grid[id].tileType);
+		});
+		*/
+
+	} else {
 		for (var i = 0; i < MyCraft.rows; i++) {
 			for (var j = 0; j < MyCraft.cols; j++) {
 				let id = MyCraft.grid[i][j].element.attr('id');
 				MyCraft.grid[i][j].setTile(grid[id].tileType);
 			}
 		}
-	//});
+	}		
 }
 
 
@@ -127,6 +153,8 @@ $(document).ready(function() {
 	setSelectTilesEvent();
 	setSelectToolsEvent();
 
+	updateInventory();
+
 	var mysave = $('#save');
 	mysave.on('click',function() {
 		saveGrid("world.json");
@@ -134,11 +162,9 @@ $(document).ready(function() {
 
 	loadGrid();
 
-	/*
-	var myload = $('#load');
-	var loadfile = 'http://cdn.mickaelalliel.com/mycraft/world.json';
+	
+	/*var myload = $('#load');
 	myload.on('click',function() {
-		loadGrid(loadfile);
-	});
-	*/
+		loadGrid('world.json');
+	});*/
 });
