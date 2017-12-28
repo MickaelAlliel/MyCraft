@@ -32,6 +32,9 @@ Tile.prototype.setTile = function(tileType) {
 		case 'tree':
 			this.tile = MyCraft.tiles.tree;
 			break;
+		case 'bird':
+			this.tile = MyCraft.tiles.bird;
+			break;
 		default:
 			this.tile = MyCraft.tiles.none;
 			break;

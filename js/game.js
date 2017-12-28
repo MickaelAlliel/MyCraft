@@ -12,12 +12,14 @@ function updateInventory() {
 	var leaf = $('#leafInventory');
 	var tree = $('#treeInventory');
 	var rock = $('#rockInventory');
+	var bird = $('#birdInventory');
 
 	dirt.html(MyCraft.inventory.dirt);
 	grass.html(MyCraft.inventory.grass);
 	leaf.html(MyCraft.inventory.leaf);
 	tree.html(MyCraft.inventory.tree);
 	rock.html(MyCraft.inventory.rock);
+	bird.html(MyCraft.inventory.bird);
 }
 
 
@@ -50,7 +52,8 @@ function setTileClickEvent(div) {
 	div.on('click', function() {
 		if (MyCraft.lastSelected == MyCraft.tools.pickaxe ||
 			MyCraft.lastSelected == MyCraft.tools.axe ||
-			MyCraft.lastSelected == MyCraft.tools.shovel) {
+			MyCraft.lastSelected == MyCraft.tools.shovel ||
+			MyCraft.lastSelected == MyCraft.tools.slingshot) {
 
 			let tileCoords = this.id.split('-');
 			let x = tileCoords[1];
@@ -71,8 +74,9 @@ function setTileClickEvent(div) {
 			let x = tileCoords[1];
 			let y = tileCoords[2];
 
-			if (MyCraft.grid[x][y].tileType=='') {
+			if (MyCraft.grid[x][y].tileType=='' && MyCraft.inventory[MyCraft.selectedTile] !== 0) {
 				MyCraft.grid[x][y].setTile(MyCraft.selectedTile);
+				MyCraft.inventory[MyCraft.selectedTile] = MyCraft.inventory[MyCraft.selectedTile] - 1;
 			}
 		}
 
@@ -87,7 +91,10 @@ function setSelectTilesEvent() {
 	toolbarTiles.on('click', function() {
 		MyCraft.selectedTile = this.id;
 		MyCraft.lastSelected = this.id;
-		console.log(this.id);
+
+		$('.tileImage').removeClass('selected');
+		$('.toolImage').removeClass('selected');
+		$('#' + MyCraft.selectedTile).addClass('selected');
 	});
 }
 
@@ -97,7 +104,10 @@ function setSelectToolsEvent() {
 	toolbarTools.on('click', function() {
 		MyCraft.selectedTool = this.id;
 		MyCraft.lastSelected = this.id;
-		console.log(this.id);
+
+		$('.tileImage').removeClass('selected');
+		$('.toolImage').removeClass('selected');
+		$('#' + MyCraft.selectedTool).addClass('selected');
 	});
 }
 
