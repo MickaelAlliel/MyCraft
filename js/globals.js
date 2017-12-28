@@ -1,7 +1,7 @@
 var MyCraft = {};
 
-MyCraft.rows = 13;
-MyCraft.cols = 20;
+MyCraft.rows = 18;
+MyCraft.cols = 30;
 
 MyCraft.grid = [];
 
